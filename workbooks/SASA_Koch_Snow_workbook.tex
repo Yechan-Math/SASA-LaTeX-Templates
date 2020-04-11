@@ -15,10 +15,10 @@
 \renewcommand\headrule{%
     \vspace{-0.75in}
     \hrulefill
-%    {\tikz[decoration=Koch snowflake]{\draw \MyDeco;}}%
+%    {\tikz[decoration=Koch snowflake]{\draw \MyDeco;}}% Schrödinger's cat의 방법  (https://tex.stackexchange.com/questions/529474/fancyhdr-koch-snowflake-as-part-of-headrule)
 %    \xdef\MyDeco{decorate{\MyDeco}}%
 %}
-   {\tikz[decoration=Koch snowflake]{\draw \MyDeco;}}%
+   {\tikz[decoration=Koch snowflake]{\draw \MyDeco;}}% Ktug의 noname님의 특정 페이지 이후부터 동일한 모양이 그려지게 한 방법(http://www.ktug.org/xe/index.php?document_srl=242624&mid=KTUG_QnA_board)
       \expandafter\ifnum\value{page}<5
 	      \xdef\MyDeco{decorate{\MyDeco}}\else
       \fi
