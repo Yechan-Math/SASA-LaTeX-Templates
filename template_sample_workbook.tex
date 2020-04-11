@@ -1,0 +1,60 @@
+\documentclass{oblivoir}
+
+\usepackage{mathtools}
+\usepackage[dbl4x6]{fapapersize}
+\usefapapersize{*,*,1in,*,1in,*}
+
+\newcommand{\mytitle}{학습지 제목}
+\title{\mytitle}
+\author{저자 이름}
+
+\usepackage{fancyhdr}
+\usepackage{tikz}
+\usetikzlibrary{decorations.fractals}
+\setlength\headheight{40pt}
+\renewcommand\headrule{%
+    \vspace{-0.75in}
+    \hrulefill
+%    {\tikz[decoration=Koch snowflake]{\draw \MyDeco;}}%
+%    \xdef\MyDeco{decorate{\MyDeco}}%
+%}
+   {\tikz[decoration=Koch snowflake]{\draw \MyDeco;}}%
+      \expandafter\ifnum\value{page}<6
+	      \xdef\MyDeco{decorate{\MyDeco}}\else
+      \fi
+}
+\xdef\MyDeco{decorate{ (0,-2) -- (3,-2) }}
+\fancypagestyle{firstpage}{
+  \fancyhead[L]{\begin{tabular}{ll} {\bfseries \mytitle} & \\ 
+  { Student No.: \phantom{$\dfrac{1}{1}$MMMM}} & {\ Name: }  \end{tabular}}
+  \fancyhead[C]{}
+}
+\pagenumbering{gobble} % 페이지 넘버링 삭제 
+
+\pagestyle{firstpage}
+\begin{document}
+
+\begin{enumerate}
+\item
+첫 페이지.
+
+\newpage
+\item 두 번째 페이지 
+\newpage
+\item 세 번째 페이지 
+\newpage
+\item 네 번째 페이지 
+\newpage
+\item 다섯 번째 페이지 
+\newpage
+\item 여섯 번째 페이지 
+\newpage
+\item 여섯 번째 페이지 
+\newpage
+\item 여섯 번째 페이지 
+
+
+\end{enumerate}
+
+
+\end{document}
