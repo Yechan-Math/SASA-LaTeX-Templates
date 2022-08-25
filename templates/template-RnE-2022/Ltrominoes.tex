@@ -1,0 +1,20 @@
+\newcommand{\checkerboard}[2]{
+	\foreach \x  in {0,...,#1}{
+   \draw (.5*\x  ,0 ) -- ++(0,.5*#2);
+        }
+\foreach \y  in {0,...,#2}{
+   \draw (0  ,.5*\y ) -- ++(.5*#1,0);
+        } }
+
+\newcommand{\LtrominoNE}[2]{
+	\draw[ultra thick,line join=round,fill=white] (.5*#1,.5*#2) -- ++(1,0)--++(0,.5) -- ++(-.5,0) --++(0,.5)--++(-.5,0)--cycle  ;
+}
+\newcommand{\LtrominoNW}[2]{
+	\draw[ultra thick,line join=round,fill=white] (.5*#1,.5*#2) -- ++(0,1)--++(-0.5,0) -- ++(0,-.5) --++(-.5,0)--++(0,-.5)--cycle  ;
+}
+\newcommand{\LtrominoSW}[2]{
+	\draw[ultra thick,line join=round,fill=white] (.5*#1+.5,.5*#2+.5) -- ++(-1,0)--++(0,-.5) -- ++(.5,0) --++(0,-.5)--++(.5,0)--cycle  ;
+}
+\newcommand{\LtrominoSE}[2]{
+	\draw[ultra thick,line join=round,fill=white] (.5*#1,.5*#2) -- ++(1,0)--++(0,-.5) -- ++(-.5,0) --++(0,-.5)--++(-.5,0)--cycle  ;
+}

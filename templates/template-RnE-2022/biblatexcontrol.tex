@@ -1,0 +1,97 @@
+% Encoding: UTF-8
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%참고 문헌 정리: biblatex을 이용하여, 국문 참고문헌, 영문 참고 문헌이 나오도록 만들었다. 참고문헌 목록을 만드는 곳에 \printbibliography[keyword=kobib] 와\printbibliography[notkeyword=kobib,heading=none] 를 써준다.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5%
+\usepackage[normalem]{ulem}
+\usepackage[backend=biber,natbib=true,sorting=none,citestyle=numeric-comp,bibstyle=numeric,maxbibnames=10,minbibnames=6,maxcitenames=6, mincitenames=1]{biblatex}
+\addbibresource{thesisbib.bib}
+
+
+
+ \renewbibmacro{in:}{}
+    \DeclareFieldFormat[article]{volume}{\emph{#1}}%
+%    \DeclareFieldFormat[article]{number}{(#1)}%    
+\DeclareFieldFormat{pages}{#1}
+
+%    \renewcommand{\multinamedelim}{, }%
+    \renewcommand{\finalnamedelim}{\ \&\  }%
+
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+%  \setunit*{\adddot}% DELETED
+%  \setunit*{\addnbspace}
+  % NEW (optional); there's also \addnbthinspace
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+\AtEveryBibitem{%
+   \DeclareFieldFormat[article,inproceedings]{title}{#1}%
+}
+
+
+
+\AtEveryCitekey{%
+  \ifkeyword{kobib}{%
+    \renewcommand{\multinamedelim}{, }%
+    \renewcommand{\finalnamedelim}{, }%
+%    \DeclareDelimFormat[Book]{andothersdelim}{asdfadsf}
+%\DefineBibliographyStrings{english}{andothers={\&~al\adddot}}
+  }{%
+  }%
+}
+
+\DefineBibliographyStrings{english}{phdthesis = {박사학위논문}}
+\DefineBibliographyStrings{english}{mathesis = {석사학위논문}}
+
+\newbibmacro*{institution+thesistype+location+date}{%
+  \printlist{location}%
+  \iflistundef{institution}
+    {\setunit*{\addcomma\space}}
+    {\setunit*{\addcolon\space}}%
+  \printlist{institution}%
+  \setunit*{\addspace}%
+  \printfield{type}%
+  \setunit*{\addcomma\space}%
+  \usebibmacro{date}%
+  \newunit}
+
+\usepackage{xpatch}
+\xpatchbibdriver{thesis}
+  {\printfield{type}%
+   \newunit
+   \usebibmacro{institution+location+date}}
+  {\usebibmacro{institution+thesistype+location+date}}
+  {}{}
+  
+  \AtEveryBibitem{%
+  \ifkeyword{kobib}{%
+    \renewcommand{\multinamedelim}{, }%
+    \renewcommand{\finalnamedelim}{, }%
+    
+   \DeclareFieldFormat[article]{volume}{\textbf{#1}}%
+    \DeclareFieldFormat*{journaltitle}{#1,}
+\DeclareFieldFormat*{titlecase}{%
+    \ifdef{\currentfield}
+      {\ifcurrentfield{journaltitle}
+         {\usefield{\textbf}{\currentfield}}%
+         {#1}}
+      {#1}}
+\DeclareFieldFormat*[book, thesis]{title}{#1}
+\DeclareFieldFormat*[book, thesis]{titlecase}{%
+    \ifdef{\currentfield}
+      {\ifcurrentfield{title}
+         {\usefield{\textbf}{\currentfield}}%
+         {#1}}
+      {#1}}
+  }{%
+  }%
+}
+
+
+\DeclareDelimFormat[textcite]{nameyeardelim}{}
+%\DeclareDelimFormat[textcite]{textcitedelim}{}
+%%%%%%%%%%%%%%
