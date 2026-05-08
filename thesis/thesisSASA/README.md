@@ -9,7 +9,7 @@
 
 - **컴파일러**: XeLaTeX (필수 — pdflatex/lualatex 불가)
 - **참고문헌**: Biber
-- **권장 환경**: [Overleaf](https://www.overleaf.com) 또는 로컬 TeX Live / MiKTeX
+- **권장 환경**: 로컬 TeX Live / MiKTeX 또는 [Overleaf](https://www.overleaf.com)
 
 > Overleaf 사용 시 프로젝트 설정 → 컴파일러: **XeLaTeX**, 참고문헌: **Biber**
 

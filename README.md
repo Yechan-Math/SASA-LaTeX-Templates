@@ -1,6 +1,6 @@
 # SASA LaTeX Templates
 
-세종과학예술영재학교(SASA) 공식 문서 양식을 LaTeX으로 구현한 모음입니다.
+세종과학예술영재학교(SASA) 여러 문서 양식을 LaTeX으로 구현한 것을 모아 놓은 저장소입니다.
 
 ---
 
@@ -20,7 +20,7 @@
 모든 양식은 **XeLaTeX** 엔진이 필요합니다 (한글 폰트 처리 때문).  
 참고문헌이 있는 경우 **Biber**도 필요합니다.
 
-권장 환경: [Overleaf](https://www.overleaf.com) 또는 로컬 TeX Live / MiKTeX
+권장 환경: 로컬 TeX Live / MiKTeX 또는 [Overleaf](https://www.overleaf.com)
 
 > Overleaf 사용 시 프로젝트 설정에서 컴파일러를 **XeLaTeX**, 참고문헌 처리를 **Biber**로 지정해야 합니다.
 
