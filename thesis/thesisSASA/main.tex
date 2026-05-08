@@ -1,0 +1,99 @@
+%% main.tex — 세종과학예술영재학교 졸업논문
+%% 컴파일: xelatex → biber → xelatex → xelatex
+%%
+%% 🔧 이 파일은 수정하지 않아도 됩니다.
+%%    논문 내용은 아래 파일들에 입력하세요:
+%%      00_info.tex        ← 논문 정보 (제목·저자·날짜 등)
+%%      01_abstract.tex    ← 국문 초록 + 영문 초록
+%%      02_body.tex        ← 본문
+%%      03_thanksto.tex    ← 감사의 글
+%%      04_contribution.tex← 기여도
+%%      refs.bib           ← 참고문헌
+
+\documentclass{thesis-SJ}
+
+% ── 논문 정보 로드 ────────────────────────────────────────────────
+\input{00_info}
+
+% ── 초록 정의 (본문에서 \AbstractKo, \AbstractEn 으로 삽입됨) ──
+\input{01_abstract}
+
+% ── 참고문헌 설정 ─────────────────────────────────────────────────
+\input{biblatex-setting}
+
+% ── 본문용 패키지 ─────────────────────────────────────────────────
+\usepackage{graphicx}       % 그림 삽입
+\usepackage{booktabs}       % 표의 \toprule, \midrule, \bottomrule
+\usepackage{subcaption}     % 부분 그림 (subfigure 환경)
+
+% 필요에 따라 주석 해제:
+% \usepackage{tikz}
+% \usepackage{pgf,pgfplots}
+% \pgfplotsset{compat=1.15}
+% \usetikzlibrary{arrows,calc}
+% \usepackage{mathrsfs}        % \mathscr 기호
+% \UseTblrLibrary{booktabs}    % tblr 안에서 \toprule 등 사용 시
+
+% ══════════════════════════════════════════════════════════════════
+\begin{document}
+% ══════════════════════════════════════════════════════════════════
+
+\renewcommand{\thepage}{\roman{page}}
+\setcounter{page}{0}
+\baselineskip=2.2em
+
+% ── 국문 초록 ─────────────────────────────────────────────────────
+\NewAbstract
+\AbstractKo
+\vskip 15pt
+\KoreanKeywords{\mykeywordsko}
+\vfill
+
+% ── 목차 · 표 목차 · 그림 목차 ────────────────────────────────────
+\newpage
+{\linespread{1.6}
+  \begin{center}
+    \tableofcontents
+    \newpage
+    \listoftables
+    \vspace{0.5cm}
+    \listoffigures
+  \end{center}
+}
+
+% ── 본문 ──────────────────────────────────────────────────────────
+\mainpartstart
+\newpage
+\renewcommand{\thepage}{\arabic{page}}
+\setcounter{page}{1}
+\linespread{1.6}
+
+\input{02_body}
+
+% ── 참고문헌 ──────────────────────────────────────────────────────
+\newpage
+\section*{참고문헌}
+\addcontentsline{toc}{section}{참고문헌}
+\printbibliography[heading=none]
+
+% 국문/영문을 분리 출력하려면 위 세 줄을 지우고 아래를 사용:
+% \printbibliography[check=korean,    title={참고문헌}]
+% \printbibliography[check=notkorean, heading=none]
+
+% ── 영문 초록 ─────────────────────────────────────────────────────
+\newpage
+\NewEnglishAbstract
+\AbstractEn
+\vskip 15pt
+\EnglishKeywords{\mykeywords}
+\vfill
+
+% ── 감사의 글 ─────────────────────────────────────────────────────
+\newpage
+\include{03_thanksto}
+
+% ── 기여도 ────────────────────────────────────────────────────────
+\input{04_contribution}
+\giyeopage
+
+\end{document}

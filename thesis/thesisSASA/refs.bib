@@ -1,0 +1,43 @@
+% refs.bib — 참고문헌 데이터베이스
+%
+% 인용 명령:
+%   \parencite{키}   →  (저자, 연도)
+%   \textcite{키}    →  저자(연도)
+%   \nocite{키}      →  본문 미인용, 목록에만 포함
+%
+% 국문 참고문헌에는 반드시  langid = {korean}  을 추가하세요.
+% 이 필드를 기준으로 국문/영문 참고문헌이 구분됩니다.
+%
+% ─────────────────────────────────────────────
+
+% ── 영문 학술지 논문 ──────────────────────────
+@article{example-article,
+  author  = {Lastname, Firstname and Lastname2, Firstname2},
+  title   = {Title of the Article},
+  journal = {Journal Name},
+  year    = {2024},
+  volume  = {10},
+  number  = {2},
+  pages   = {100--120},
+}
+
+% ── 영문 단행본 ───────────────────────────────
+@book{example-book,
+  author    = {Lastname, Firstname},
+  title     = {Title of the Book},
+  publisher = {Publisher Name},
+  address   = {City},
+  year      = {2020},
+}
+
+% ── 국문 학술지 논문 ──────────────────────────
+@article{example-korean,
+  author  = {홍, 길동 and 김, 철수},
+  title   = {국문 논문 제목},
+  journal = {학술지명},
+  year    = {2024},
+  volume  = {10},
+  number  = {2},
+  pages   = {100--120},
+  langid  = {korean},
+}

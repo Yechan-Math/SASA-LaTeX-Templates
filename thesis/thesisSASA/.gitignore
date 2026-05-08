@@ -1,0 +1,31 @@
+# LaTeX 보조 파일
+*.aux
+*.bbl
+*.bbl-SAVE-ERROR
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.lof
+*.lot
+*.out
+*.run.xml
+*.synctex.gz
+*.synctex.gz.sum.synctex
+*.toc
+*.xdv
+
+# PDF
+# 배포용 미리보기 PDF를 저장소에 포함하려면 아래 줄을 주석 처리하세요.
+*.pdf
+
+# macOS
+.DS_Store
+
+# 내부용 — 공개 저장소 제외 대상
+CLAUDE.md
+thesis_example/
+
+# images/ 폴더는 유지하되 내부 파일은 개별 관리
+# (빈 폴더 유지용 .gitkeep 은 추적 대상에 포함)

@@ -1,0 +1,127 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% BibLaTeX 설정
+% - style=apa: APA 7판 기준 (biblatex-apa 패키지)
+% - 국문/영문 분리 출력:
+%     \printbibliography[check=korean, title={참고문헌}]
+%     \printbibliography[check=notkorean, heading=none]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[
+  backend=biber,
+  style=apa,
+  sorting=nyt,
+  dashed=false,
+  maxbibnames=10,
+  minbibnames=6,
+  maxcitenames=3,
+  mincitenames=1
+]{biblatex}
+\addbibresource{refs.bib}
+
+%------------------------------------------------------------
+% 공통 포맷 설정
+%------------------------------------------------------------
+
+% "in:" 제거
+\renewbibmacro{in:}{}
+
+% 페이지 범위 앞의 'pp.' 제거
+\DeclareFieldFormat{pages}{#1}
+
+% article, inproceedings 제목: 따옴표 없이 그대로 (APA 기본값 유지)
+%\DeclareFieldFormat[article,inproceedings]{title}{#1}
+
+% 공저자 구분자: & 앞뒤 공백 (영문 기본값)
+\renewcommand{\finalnamedelim}{\ \&\ }
+
+%------------------------------------------------------------
+% 국문 참고문헌 전용 설정 (langid=korean 기준)
+%------------------------------------------------------------
+
+% 학위논문 유형 한국어 표기: preamble에서 한 번만 선언
+\DefineBibliographyStrings{english}{%
+  phdthesis = {박사학위논문},
+  mathesis  = {석사학위논문},
+}
+
+%\AtEveryBibitem{%
+%  \iffieldequalstr{langid}{korean}{%
+%    % 국문: 저자 구분자 쉼표로 변경
+%    \renewcommand{\multinamedelim}{,\space}%
+%    \renewcommand{\finalnamedelim}{,\space}%
+%  }{}%
+%}
+%\AtEveryBibitem{%
+%  \iffieldequalstr{langid}{korean}{%
+%    \renewcommand{\multinamedelim}{,\space}%
+%    \renewcommand{\finalnamedelim}{,\space}%
+%    \renewcommand{\mkbibemph}[1]{##1}%   % 이탤릭 무력화만 유지
+%    \renewcommand{\emph}[1]{##1}%
+%  }{}%
+%}
+\AtEveryBibitem{%
+  \iffieldequalstr{langid}{korean}{%
+    \renewcommand{\multinamedelim}{,\space}%
+%    \renewcommand{\finalnamedelim}{,\space}%
+    % biblatex-apa의 & 삽입 매크로 무력화
+    \renewcommand{\andothersdelim}{\addcomma\space}%
+    \DeclareDelimFormat{andothers}{\addcomma\space}%
+    \renewbibmacro*{name:andothers}{%
+      \ifboolexpr{
+        test {\ifnumequal{\value{listcount}}{\value{liststop}}}
+        and
+        test \ifmorenames
+      }
+        {\printdelim{andothersdelim}\bibstring{andothers}}
+        {}}%
+  }{}%
+}
+\usepackage{xpatch}
+
+% biblatex-apa의 finalnamedelim을 langid에 따라 분기
+\DeclareDelimFormat{finalnamedelim}{%
+  \iffieldequalstr{langid}{korean}%
+    {\addcomma\space}%
+    {\addspace\&\space}%
+}
+%\AtEveryBibitem{%
+%  \iffieldequalstr{langid}{korean}{%
+%    \renewcommand{\multinamedelim}{,\space}%
+%    \renewcommand{\finalnamedelim}{,\space}%
+%    % 이탤릭 → 볼드 대체
+%    \DeclareFieldFormat[article]{title}{#1}%               % 제목: 일반체
+%    \DeclareFieldFormat[article]{journaltitle}{\textbf{#1}}% 학술지명: 볼드
+%    \DeclareFieldFormat[article]{volume}{\textbf{#1}}%      % 권: 볼드
+%    \DeclareFieldFormat[article]{number}{\mkbibparens{#1}}% % 호: 괄호, 일반체
+%  }{}%
+%}
+% \DeclareFieldFormat는 \AtEveryBibitem 밖, preamble에서 선언
+\DeclareFieldFormat[article]{journaltitle}{%
+  \iffieldequalstr{langid}{korean}{\textbf{#1}}{\mkbibemph{#1}}%
+}
+\DeclareFieldFormat[article]{volume}{%
+  \iffieldequalstr{langid}{korean}{\textbf{#1}}{\mkbibemph{#1}}%
+}
+\DeclareFieldFormat[article]{number}{%
+  \mkbibparens{#1}%
+}
+% preamble 레벨 (AtEveryBibitem 밖)
+\DeclareFieldFormat[article]{title}{%
+  \iffieldequalstr{langid}{korean}{#1}{\mkbibquote{#1}}%
+}
+%------------------------------------------------------------
+% \textcite 사용 시 저자명과 연도 사이 공백 제거
+%------------------------------------------------------------
+
+\DeclareDelimFormat[textcite]{nameyeardelim}{}
+
+%------------------------------------------------------------
+% 국문/영문 분리 필터
+%------------------------------------------------------------
+
+\defbibcheck{korean}{%
+  \iffieldequalstr{langid}{korean}{}{\skipentry}%
+}
+\defbibcheck{notkorean}{%
+  \iffieldequalstr{langid}{korean}{\skipentry}{}%
+}
