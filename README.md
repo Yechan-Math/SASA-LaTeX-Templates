@@ -10,6 +10,7 @@
 |------|------|------|
 | 졸업논문 | [`thesis/thesisSASA/`](thesis/thesisSASA/) | ✅ 배포 중 |
 | R&E 보고서 | — | 🔧 준비 중 |
+| 수학 학습지 | [`workbooks/`](workbooks/) | ✅ 배포 중 |
 
 각 양식 폴더 안의 `README.md`에서 세부 사용법을 확인하세요.
 
