@@ -22,11 +22,3 @@
 
 # macOS
 .DS_Store
-
-# 내부용 — 공개 저장소 제외 대상
-CLAUDE.md
-.claude/
-2023SASATEX/
-moTeXdong/
-textbooks/
-templates/
