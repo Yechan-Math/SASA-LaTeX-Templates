@@ -1,0 +1,314 @@
+% file: kskorsym.sty
+%
+% written by Nova de Hi (2024)
+%
+%
+\ProvidesExplPackage{kskorsymb}
+	{2024/08/30}
+	{v0.6.3}
+	{shorthands for korean punctuations}
+
+\RequirePackage{l3keys2e}
+\RequirePackage{etoolbox}
+
+\keys_define:nn { kskorsym }
+{
+	localenv	.bool_set:N = \opt_localenv_bool,
+	minimal		.bool_set:N = \opt_minimal_bool,
+	minimalplus	.bool_set:N = \opt_minimalplus_bool
+}
+
+\keys_set:nn { kskorsym }
+{
+	localenv = false,
+	minimal  = false,
+	minimalplus = false
+}
+
+\ProcessKeysOptions { kskorsym }
+
+\RequirePackage{iftex}
+\RequirePackage{etoolbox}
+
+\ifx\ifXeTeX\ifLuaTeX
+	\providecommand*\_UnBatang_font {}
+	\providecommand*\_HCRBatang_font {}
+\else
+\AtEndPreamble{
+    \NewDocumentCommand \_UnBatang_font {} {
+    	\fontspec{UnBatang.ttf}[BoldFont=UnBatangBold.ttf]
+		\cs_if_exist:NT \hangulfontspec {
+        	\hangulfontspec{UnBatang.ttf}[BoldFont=UnBatangBold.ttf]
+		}
+    }
+    \NewDocumentCommand \_HCRBatang_font {} {
+    	\fontspec{HANBatang-LVT.ttf}[BoldFont=HANBatangB-LVT.ttf]
+		\cs_if_exist:NT \hangulfontspec {
+	    	\hangulfontspec{HANBatang-LVT.ttf}[BoldFont=HANBatangB-LVT.ttf]
+		}
+    }
+}
+\fi
+
+\let\ORG_RQRQ"
+
+\prop_new:N \g_UserSymb_prop 
+\bool_new:N \korsym_parenstatus_bool
+\bool_new:N \korsym_largequotestatus_bool
+\bool_new:N \korsym_smallquotestatus_bool
+
+\bool_if:NTF \opt_minimal_bool
+{
+    \prop_const_from_keyval:Nn \g_KorSymb_prop
+    {
+    	.	=  ·, 
+	}
+}
+{
+	\bool_if:NTF \opt_minimalplus_bool
+	{
+	    \prop_const_from_keyval:Nn \g_KorSymb_prop
+	    {
+	    	.	=  ·, 
+	    	\~	= {\_UnBatang_font ∼},
+	    	-	= {\_HCRBatang_font …},
+	    	:	= ：,
+	    	'	= \mysmallQuoteSymbol,
+	    	"	= \myQuoteSymbol,
+			\' 	= \mysmallQuoteSymbolDeep,
+			\"	= \myQuoteSymbolDeep,
+			/	= \myExtraParenMark,
+		}
+	}
+	{
+	    \prop_const_from_keyval:Nn \g_KorSymb_prop
+	    {
+	    	.	=  ·, 
+	    	\.	=  。,
+	    	\,	=  、,
+	    	<	=  〈,
+	    	>	=  〉,
+	    	(	=  《,
+	    	)	=  》,
+	    	[	=  「,
+	    	]	=  」,
+	    	\{	=  『,
+	    	\}	=  』,
+	    	\~	= {\_UnBatang_font ∼},
+	%%%    	-	= \myEllipsisSymbol,
+			- 	= {\_HCRBatang_font …},
+	    	:	= ：,
+	    	'	= \mysmallQuoteSymbol,
+	    	"	= \myQuoteSymbol,
+			\' 	= \mysmallQuoteSymbolDeep,
+			\"	= \myQuoteSymbolDeep,
+	    	/	= \myExtraParenMark,
+	    }
+	}
+}
+
+\char_set_catcode_active:N \"
+
+\bool_if:NF \opt_localenv_bool
+{
+	\AtBeginDocument {
+		\catcode`\"=\active
+	}
+}
+
+%%% \protected? 
+\def"{
+	\mode_if_math:F
+	{
+    	\peek_catcode:NTF \c_space_token
+    	{ \texorpdfstring { \ORG_RQRQ } {} }
+    	{ \__shorthand_kor_punctuations }
+	}
+}
+
+\NewDocumentCommand \__shorthand_kor_punctuations { m }
+{
+	\group_begin:
+
+	\prop_if_in:NnTF \g_KorSymb_prop { #1 }
+	{
+		\prop_get:NnN \g_KorSymb_prop { #1 } \l_tmpa_tl
+		\tl_use:N \l_tmpa_tl
+	}
+	{
+		\prop_if_in:NnTF \g_UserSymb_prop { #1 }
+		{
+			\prop_get:NnN \g_UserSymb_prop { #1 } \l_tmpa_tl 
+			\tl_use:N \l_tmpa_tl
+		}
+		{
+			\texorpdfstring { \ORG_RQRQ #1 } { #1 }
+		}
+	}
+	
+	\group_end:
+}
+
+\NewDocumentCommand \escaperqcat  {} { \catcode`\"=12 }
+\NewDocumentCommand \restorerqcat {} { \catcode`\"=\active }
+\let\brr\escaperqcat %%% alias
+\let\err\restorerqcat  %%% alias
+\let\startkorsymbols\restorerqcat
+
+%\NewDocumentCommand \myEllipsisSymbol {}
+%{
+%	\__ellipsis_double_dash:nn
+%}
+%
+%\cs_new:Npn \__ellipsis_double_dash:nn #1 #2
+%{
+%	#1 {\_HCRBatang_font …}
+%	\str_if_eq:nnTF { #2 } { - }
+%	{
+%		\nobreak {\_HCRBatang_font …}
+%	}
+%	{
+%		\relax #2
+%	}
+%}
+
+\NewDocumentCommand \addUserSymbol { m }
+{
+	\prop_gput_from_keyval:Nn \g_UserSymb_prop { #1 }
+}
+
+\NewDocumentCommand \clearUserSymbol {}
+{
+	\prop_gclear:N \g_UserSymb_prop
+}
+
+\bool_if:nT
+{
+	( ! \opt_minimal_bool ) && ( ! \opt_minimalplus_bool )
+}
+{ 
+	\addUserSymbol{
+			*	=  ※,
+			{=}	=  ☞,
+			?	=  ◎,
+			X	= {\_UnBatang_font ×},
+	}
+}
+
+\NewDocumentCommand \removeDefaultSymbol { m }   %% not indended to use practically
+{
+	\clist_set:Nn \l_tmpa_clist { #1 }
+	\clist_map_inline:Nn \l_tmpa_clist
+	{
+		\prop_gremove:Nn \g_KorSymb_prop { ##1 }
+	}
+}
+
+\NewDocumentCommand \removeUserSymbol { m }
+{
+	\clist_set:Nn \l_tmpa_clist { #1 }
+	\clist_map_inline:Nn \l_tmpa_clist
+	{
+		\prop_gremove:Nn \g_UserSymb_prop { ##1 }
+	}
+}
+
+
+%%%% 0.6
+\NewDocumentCommand \myQuoteSymbol {}
+{
+	\bool_if:NTF \korsym_largequotestatus_bool
+	{
+		”
+		\bool_gset_false:N \korsym_largequotestatus_bool
+	}
+	{
+		“
+		\bool_gset_true:N \korsym_largequotestatus_bool
+	}
+}
+
+\NewDocumentCommand \myQuoteSymbolDeep {}
+{
+	\bool_if:NTF \l_tmpa_bool
+	{
+		”
+		\bool_gset_false:N \l_tmpa_bool
+	}
+	{
+		“
+		\bool_gset_true:N \l_tmpa_bool
+	}
+}
+
+\NewDocumentCommand \mysmallQuoteSymbol {}
+{
+	\bool_if:NTF \korsym_smallquotestatus_bool
+	{
+		’
+		\bool_gset_false:N \korsym_smallquotestatus_bool
+	}
+	{
+		‘
+		\bool_gset_true:N \korsym_smallquotestatus_bool
+	}
+}
+
+\NewDocumentCommand \mysmallQuoteSymbolDeep {}
+{
+	\bool_if:NTF \l_tmpb_bool
+	{
+		’
+		\bool_gset_false:N \l_tmpb_bool
+	}
+	{
+		‘
+		\bool_gset_true:N \l_tmpb_bool
+	}
+}
+
+\NewDocumentCommand \defineextraparenmark { m }
+{
+	\tl_set:Nn \l_tmpa_tl { #1 }
+	\tl_gset:Nx \extraParenMarkOpen { \tl_item:Nn \l_tmpa_tl { 1 } }
+	\tl_gset:Nx \extraParenMarkClose { \tl_item:Nn \l_tmpa_tl { 2 } }
+}
+
+\defineextraparenmark{〔〕}
+
+\NewDocumentCommand \myExtraParenMark {}
+{
+	\bool_if:NTF \korsym_parenstatus_bool
+	{
+		\extraParenMarkClose
+		\bool_gset_false:N \korsym_parenstatus_bool
+	}
+	{
+		\extraParenMarkOpen
+		\bool_gset_true:N \korsym_parenstatus_bool
+	}	
+}
+
+%%% verbatim
+\patchcmd\@verbatim{\dospecials}{\dospecials\catcode`\"=12}{}{}
+\patchcmd\verb{\dospecials}{\dospecials\catcode`\"=12}{}{}
+%\AddToHook{env/verbatim/begin}{\catcode`\"=12}
+
+\AtEndPreamble{
+	\@ifpackageloaded{hyperref}{}{
+		\providecommand*\texorpdfstring[2]{#1}
+	}
+}
+
+%%% \XBrule is a provided command by oblivoir, and the
+%%% \expldash uses it. We redefine it here.
+\ifx\XBrule\undefined\else
+\renewcommand*\XBrule{
+	\sbox\togetheightoffont{!}
+	\setlength\htoffnt{\ht\togetheightoffont}
+	\raise.43\htoffnt\hbox{\rule{1.25em}{.04em}}
+}
+\fi
+
+
+\endinput
