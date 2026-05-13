@@ -1,0 +1,87 @@
+% RnE 보고서 양식 스타일 파일
+% 패키지·환경·명령어 설정만 — 본문 내용 없음
+
+%-- 용지 설정
+\usepackage{fapapersize}
+\usefastocksize{210mm,297mm}
+\usefapapersize{210mm,297mm,25mm,25mm,25mm,25mm}
+
+%-- 수식
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+
+%-- 그래픽
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+%-- 텍스트·레이아웃
+\usepackage{setspace}
+\usepackage{lipsum}
+\usepackage{jiwonlipsum}
+\usepackage{ragged2e}
+\usepackage{textpos}
+\usepackage{kskorsymb}
+
+%-- 표
+\usepackage{tabularray}
+\UseTblrLibrary{booktabs}
+\newlength\mycellwidth  % 셀 병합에서 사용하는 길이 변수
+
+%-- 캡션
+\usepackage{caption}
+\DeclareCaptionLabelFormat{cjk-single-bracket}{[#1 #2]}
+\captionsetup[figure]{labelsep=space, labelfont=bf,
+  labelformat=cjk-single-bracket, name={Fig.}}
+\captionsetup[table]{labelsep=period, labelfont=bf, name={Table}}
+
+%-- 섹션 번호 형식
+\renewcommand\thesection{\Roman{section}}
+\renewcommand\thesubsection{\arabic{subsection}}
+\renewcommand\thesubsubsection{\thesubsection.\arabic{subsubsection}}
+\setsecnumformat{\csname the#1\endcsname.\ }
+\setcounter{secnumdepth}{3}
+\renewcommand{\abstractname}{Abstract}
+
+%-- 정리류 환경
+\newtheorem{theorem}{\bfseries\sffamily 정리}
+\newtheorem{lemma}[theorem]{도움정리}
+\newtheorem{corollary}[theorem]{따름정리}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{정의}
+\newtheorem{example}[theorem]{보기}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{참고}
+\numberwithin{equation}{section}
+\renewcommand*{\proofname}{증명}
+
+\allowdisplaybreaks
+
+%-- 커스텀 명령어
+% 수식 안 쉼표에서 줄바꿈 허용
+\newcommand{\splitatcommas}[1]{%
+  \begingroup
+  \begingroup\lccode`~=`, \lowercase{\endgroup
+    \edef~{\mathchar\the\mathcode`, \penalty0 \noexpand\hspace{0pt plus 1em}}%
+  }\mathcode`,="8000 #1%
+  \endgroup
+}
+
+% 체크된 체크박스
+\newcommand{\mycheckedbox}{$\square$\!\!\!\!\checkmark}
+
+% 각 페이지 상단 헤더 (1·2·3페이지 섹션 제목)
+% 선택 인수: 헤더 아래 수직 여백 (기본 23pt)
+\newcommand{\RnEpageheader}[2][23pt]{%
+  \begin{textblock*}{\textwidth}(0cm,0cm)%
+    \noindent\LARGE\bfseries #2%
+  \end{textblock*}%
+  \vspace{#1}%
+}
+
+%-- 참고문헌 설정
+\input{biblatex-setting.tex}
+
+%-- 요약문 매크로 (학생 편집: 03_summaries.tex)
+\input{03_summaries.tex}

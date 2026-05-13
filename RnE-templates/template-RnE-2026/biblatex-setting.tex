@@ -1,0 +1,74 @@
+% 참고문헌 설정 (biblatex + biber)
+
+\usepackage[backend=biber, natbib=true, sorting=none,
+  citestyle=numeric-comp, bibstyle=numeric,
+  maxbibnames=10, minbibnames=6,
+  maxcitenames=6, mincitenames=1]{biblatex}
+\addbibresource{refs.bib}
+
+\renewbibmacro{in:}{}
+\DeclareFieldFormat[article]{volume}{\emph{#1}}
+\DeclareFieldFormat{pages}{#1}
+\renewcommand{\finalnamedelim}{\ \&\ }
+
+\renewbibmacro*{volume+number+eid}{%
+  \printfield{volume}%
+  \printfield{number}%
+  \setunit{\addcomma\space}%
+  \printfield{eid}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+\AtEveryBibitem{%
+  \DeclareFieldFormat[article,inproceedings]{title}{#1}%
+  \ifkeyword{kobib}{%
+    \renewcommand{\multinamedelim}{, }%
+    \renewcommand{\finalnamedelim}{, }%
+    \DeclareFieldFormat[article]{volume}{\textbf{#1}}%
+    \DeclareFieldFormat*{journaltitle}{#1,}%
+    \DeclareFieldFormat*{titlecase}{%
+      \ifdef{\currentfield}
+        {\ifcurrentfield{journaltitle}
+           {\usefield{\textbf}{\currentfield}}%
+           {#1}}
+        {#1}}%
+    \DeclareFieldFormat*[book,thesis]{title}{#1}%
+    \DeclareFieldFormat*[book,thesis]{titlecase}{%
+      \ifdef{\currentfield}
+        {\ifcurrentfield{title}
+           {\usefield{\textbf}{\currentfield}}%
+           {#1}}
+        {#1}}%
+  }{}%
+}
+
+\AtEveryCitekey{%
+  \ifkeyword{kobib}{%
+    \renewcommand{\multinamedelim}{, }%
+    \renewcommand{\finalnamedelim}{, }%
+  }{}%
+}
+
+\DefineBibliographyStrings{english}{phdthesis = {박사학위논문}}
+\DefineBibliographyStrings{english}{mathesis  = {석사학위논문}}
+
+\newbibmacro*{institution+thesistype+location+date}{%
+  \printlist{location}%
+  \iflistundef{institution}
+    {\setunit*{\addcomma\space}}
+    {\setunit*{\addcolon\space}}%
+  \printlist{institution}%
+  \setunit*{\addspace}%
+  \printfield{type}%
+  \setunit*{\addcomma\space}%
+  \usebibmacro{date}%
+  \newunit}
+
+\usepackage{xpatch}
+\xpatchbibdriver{thesis}
+  {\printfield{type}%
+   \newunit
+   \usebibmacro{institution+location+date}}
+  {\usebibmacro{institution+thesistype+location+date}}
+  {}{}
+
+\DeclareDelimFormat[textcite]{nameyeardelim}{}
