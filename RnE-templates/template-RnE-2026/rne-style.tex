@@ -10,7 +10,7 @@
 \usepackage{mathtools}
 \usepackage{amsthm}
 \usepackage{amssymb}
-% \mathscr가 필요하면 main.tex에서 \usepackage{mathrsfs}를 해제하세요.
+\usepackage{mathrsfs}
 
 %-- 그래픽
 \usepackage{graphicx}
@@ -18,6 +18,8 @@
 
 %-- 텍스트·레이아웃
 \usepackage{setspace}
+\usepackage{lipsum}
+\usepackage{jiwonlipsum}
 \usepackage{ragged2e}
 \usepackage{textpos}
 \usepackage{kskorsymb}
@@ -57,10 +59,6 @@
 \allowdisplaybreaks
 
 %-- 커스텀 명령어
-% 한글 더미 텍스트 자리 표시자 — \jiwon[숫자] 또는 \jiwon[숫자-숫자]
-% jiwonlipsum 패키지 없이 동작하는 경량 버전 (Overleaf 무료 플랜 호환)
-\newcommand{\jiwon}[1][1]{\textcolor{gray}{(여기에 내용을 작성하세요.)}}
-
 % 수식 안 쉼표에서 줄바꿈 허용
 \newcommand{\splitatcommas}[1]{%
   \begingroup
